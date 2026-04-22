@@ -2,9 +2,9 @@
 
 This is simulation of beta-delayed charged-particle decays in a gas-filled proportional counter. It was developed to characterize the efficiency of the Proton Detector as part of the Gaseous Detector with Germanium Tagging (GADGET) system at Michigan State University. The project consists of three programs that run sequentially:
 
-1. **`RecoverBeamSpot`** fits the experimental beam-spot position and width from the measured central-pad and outer-quadrant-pad intensities.
-2. **`GetParticleDistributions`** uses those beam-spot parameters (plus variations for systematic uncertainty) to sample the input distributions needed by the simulation.
-3. **`SGMC`** runs the per-proton Monte-Carlo scan and produces the final efficiency summary.
+1. **`RecoverBeamSpot`** uses the multiplicity of counts across five segmented detector pads to determine a 2D Gaussian beam from which the starting positions of radioactive beam decays are sampled.
+2. **`GetParticleDistributions`** uses the parameters deduced from chi-squared minimization to save these beam-spot distributions to histograms. It also uses drift time data as a proxy for the longitudinal beam distribution in order to simulate the effect of electron diffusion within the gaseous medium, assuming a uniform eletric field. 
+3. **`SGMC`** calculates the energy deposition of protons in the fill gas, determines the magnitude of ionization electrons, and the geometry of the proton tracks in the detector. This information is used to estimate how likely a proton of a given energy is to be measured by the MICROMEGAS electronics readout.
 
 ## Physics overview
 
