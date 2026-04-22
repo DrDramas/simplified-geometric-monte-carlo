@@ -78,7 +78,7 @@ struct Config {
   // De is independent: one electron-cloud family is produced per entry.
   vector<double> De;            // electron diffusion coefficients
 
-  // Chemistry parameters (used by CalculateDiffusivity)
+  // Chemistry parameters (used by calculateDiffusivity)
   double TKelvin;              // temperature [K]
   double PTorr;                // gas pressure [Torr]
   double fillGasAtomicRadius;  // fill-gas atomic radius [pm]
@@ -86,7 +86,7 @@ struct Config {
   double M_fillGas;            // molar mass of fill gas  [g/mol]
   double M_beamIon;            // molar mass of beam ion  [g/mol]
 
-  // File/histogram names (optional in the config; see defaults in LoadConfig)
+  // File/histogram names (optional in the config; see defaults in loadConfig)
   string inputFile;            // input ROOT file path
   string inputHistName;        // name of the input TH1 to read
   string outputFile;           // output ROOT file path
@@ -224,7 +224,7 @@ static vector<int> RequireIntList(const map<string,string> &kv,
   return out;
 }
 
-Config LoadConfig(const string &path) {
+Config loadConfig(const string &path) {
   map<string,string> kv = ReadKeyValueFile(path);
   Config c;
   c.nElectrons          = RequireLong  (kv, "nElectrons");
@@ -260,7 +260,7 @@ Config LoadConfig(const string &path) {
 // Physics
 //============================================================================
 
-double CalculateDiffusivity(const Config &c) {
+double calculateDiffusivity(const Config &c) {
   const double A    = 1.859e-3;
   const double Patm = c.PTorr / 760.;
   const double collisionDiameter =
@@ -387,7 +387,7 @@ static TH2D *FillElectronCloud(const ElectronCloudJob &job,
 }
 
 // Build job lists for the whole config.
-static vector<BeamSpotJob> MakeBeamSpotJobs(const Config &c, double Da) {
+static vector<BeamSpotJob> makeBeamSpotJobs(const Config &c, double Da) {
   vector<BeamSpotJob> jobs;
   jobs.reserve(c.numHalfLives.size());
   for (size_t k = 0; k < c.numHalfLives.size(); ++k) {
@@ -412,7 +412,7 @@ static vector<BeamSpotJob> MakeBeamSpotJobs(const Config &c, double Da) {
   return jobs;
 }
 
-static vector<ElectronCloudJob> MakeElectronCloudJobs(const Config &c) {
+static vector<ElectronCloudJob> makeElectronCloudJobs(const Config &c) {
   vector<ElectronCloudJob> jobs;
   jobs.reserve(c.De.size() * 9);
   const double xMin = -20, xMax = 20;
@@ -462,7 +462,7 @@ struct JobHandle {
   size_t  localIndex;   // index into the matching (bsJobs|ecJobs) vector
 };
 
-static void WorkerLoop(
+static void workerLoop(
     unsigned tid,
     unsigned long seedBase,
     long nProtons,
@@ -513,8 +513,8 @@ static void WorkerLoop(
 //============================================================================
 // Entry point
 //============================================================================
-void GetParticleDistributions(const char *configPath = "GetParticleDistributions.cfg") {
-  const Config c = LoadConfig(configPath);
+void getParticleDistributions(const char *configPath = "getParticleDistributions.cfg") {
+  const Config c = loadConfig(configPath);
 
   // Read the input drift-time reference (serial; cheap).
   TFile *InFile = TFile::Open(c.inputFile.c_str(), "READ");
@@ -554,9 +554,9 @@ void GetParticleDistributions(const char *configPath = "GetParticleDistributions
   DriftTimes->Write();
 
   // ---- Build the parallel workload -----------------------------------------
-  const double Da = CalculateDiffusivity(c);
-  const vector<BeamSpotJob>      bsJobs = MakeBeamSpotJobs(c, Da);
-  const vector<ElectronCloudJob> ecJobs = MakeElectronCloudJobs(c);
+  const double Da = calculateDiffusivity(c);
+  const vector<BeamSpotJob>      bsJobs = makeBeamSpotJobs(c, Da);
+  const vector<ElectronCloudJob> ecJobs = makeElectronCloudJobs(c);
 
   vector<JobHandle> handles;
   handles.reserve(bsJobs.size() + ecJobs.size());
@@ -588,13 +588,13 @@ void GetParticleDistributions(const char *configPath = "GetParticleDistributions
   BuildGaussianTF2Template();
 
   if (nThreads <= 1) {
-    WorkerLoop(0, seedBase, c.nProtons, c.nElectrons,
+    workerLoop(0, seedBase, c.nProtons, c.nElectrons,
                &bsJobs, &ecJobs, &handles, &results, &nextJob);
   } else {
     vector<std::thread> pool;
     pool.reserve(nThreads);
     for (unsigned t = 0; t < nThreads; ++t) {
-      pool.emplace_back(WorkerLoop,
+      pool.emplace_back(workerLoop,
                         t, seedBase, c.nProtons, c.nElectrons,
                         &bsJobs, &ecJobs, &handles, &results, &nextJob);
     }
@@ -616,13 +616,13 @@ void GetParticleDistributions(const char *configPath = "GetParticleDistributions
   delete InFile;
 }
 
-// Allow standalone compilation: `g++ GetParticleDistributions.cpp ... -o GetParticleDistributions`
+// Allow standalone compilation: `g++ getParticleDistributions.cpp ... -o getParticleDistributions`
 // When loaded as a ROOT macro (via CLING), __CLING__ is defined and main() is
-// skipped, so `root -l 'GetParticleDistributions.cpp("cfg.cfg")'` still works as before.
+// skipped, so `root -l 'getParticleDistributions.cpp("cfg.cfg")'` still works as before.
 #ifndef __CLING__
 int main(int argc, char** argv) {
-  const char* configFile = (argc > 1) ? argv[1] : "GetParticleDistributions.cfg";
-  GetParticleDistributions(configFile);
+  const char* configFile = (argc > 1) ? argv[1] : "getParticleDistributions.cfg";
+  getParticleDistributions(configFile);
   return 0;
 }
 #endif
