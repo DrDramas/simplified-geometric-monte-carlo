@@ -8,9 +8,7 @@ This is simulation of beta-delayed charged-particle decays in a gas-filled propo
 
 ## Physics overview
 
-<sup>31</sup>Cl undergoes β<sup>+</sup> decay (T<sub>1/2</sub> = 190 ms)
-to excited states of <sup>31</sup>S, which can then de-excite by
-emitting a proton. Precise measurement of these β-delayed proton
+<sup>31</sup>Cl undergoes β<sup>+</sup> decay (T<sub>1/2</sub> = 190 ms) to <sup>31</sup>S, which can then de-excite via protonemitting a proton. Precise measurement of these β-delayed proton
 branches provides an experimental constraint on the <sup>30</sup>P(p,
 γ)<sup>31</sup>S reaction rate, which is important for understanding
 nucleosynthesis in classical novae — particularly the abundance of
@@ -265,4 +263,4 @@ Proton Detector):
 
 If you use this code in published work, please cite:
 
-> *[Thesis / paper citation to be added upon publication.]*
+> T. Budner, M. Friedman, L. J. Sun, C. Wrede, et al. *β-Delayed Proton Pandemonium: A first look at the <sup>31</sup>Cl(βpγ)<sup>30</sup>P decay scheme* (2026), in preparation.
