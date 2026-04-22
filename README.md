@@ -36,7 +36,7 @@ SeGA is used to measure the γ-rays emitted from exicited states of <sup>31</sup
 
 *Figure 4: Reconstructed beam spot projected onto the segmented MICROMEGAS pad plane.*
 
-For more details on the design, testing, and commission of the GADGET apparatus, see Friedman et al., Nucl. Instrum. Methods A **940**, 93 (2019).
+For more details on the design, testing, and commission of the GADGET apparatus, see Friedman *et al.*, Nucl. Instrum. Methods A **940**, 93 (2019).
 
 ### Systematic Uncertainties
 Thus, the variable uncertainties associated with modeling GADGET's proton detection efficiencies are as follows:
@@ -184,15 +184,15 @@ Each simulation job is seeded deterministically from `std::time(nullptr) + const
 
 For the GADGET detector system:
 
-> M. Friedman, D. Pérez-Loureiro, T. Budner, E. Pollacco, C. Wrede, et al., *GADGET: a Gaseous Detector with Germanium Tagging*, Nucl. Instrum. Methods A **940**, 93 (2019). [doi:10.1016/j.nima.2019.05.100](https://doi.org/10.1016/j.nima.2019.05.100)
+> M. Friedman, D. Pérez-Loureiro, T. Budner, E. Pollacco, C. Wrede, *et al.*, *GADGET: a Gaseous Detector with Germanium Tagging*, Nucl. Instrum. Methods A **940**, 93 (2019). [doi:10.1016/j.nima.2019.05.100](https://doi.org/10.1016/j.nima.2019.05.100)
 
 For the GADGET II upgrade (a TPC-based successor to the present Proton Detector):
 
-> R. Mahajan, T. Wheeler, E. Pollacco, C. Wrede, et al., *Time Projection Chamber for GADGET II*, Phys. Rev. C **110**, 035807 (2024). [doi:10.1103/PhysRevC.110.035807](https://doi.org/10.1103/PhysRevC.110.035807)
+> R. Mahajan, T. Wheeler, E. Pollacco, C. Wrede, *et al.*, *Time projection chamber for GADGET II*, Phys. Rev. C **110**, 035807 (2024). [doi:10.1103/PhysRevC.110.035807](https://doi.org/10.1103/PhysRevC.110.035807)
 
 ## Citation
 
 If you use this code in published work, please cite:
 > T. Budner, *<sup>31</sup>Cl β-Delayed Proton Decay and Classical Nova Nucleosynthesis*, Ph.D. thesis, Michigan State University (2022).
 
-> T. Budner, M. Friedman, L. J. Sun, C. Wrede, et al. *β-Delayed Proton Pandemonium: A first look at the <sup>31</sup>Cl(βpγ)<sup>30</sup>P decay scheme* (2026), in preparation.
+> T. Budner, M. Friedman, L. J. Sun, C. Wrede, *et al.* *β-Delayed Proton Pandemonium: A first look at the <sup>31</sup>Cl(βpγ)<sup>30</sup>P decay scheme* (2026), in preparation.
