@@ -1,21 +1,10 @@
-# 31Cl β-delayed Proton-Detection Efficiency Simulation
+# Simplified Geometric Monte Carlo (SGMC) simulation
 
-Monte-Carlo simulation and analysis code for the proton-detection
-efficiency of the **Proton Detector**, the gaseous component of the
-**GADGET** (Gaseous Detector with Germanium Tagging) system at the
-National Superconducting Cyclotron Laboratory (NSCL), Michigan State
-University. Written in the context of a β-delayed proton-decay
-measurement of <sup>31</sup>Cl. The project consists of three programs
-that run sequentially:
+This is simulation of beta-delayed charged-particle decays in a gas-filled proportional counter. It was developed to characterize the efficiency of the Proton Detector as part of the Gaseous Detector with Germanium Tagging (GADGET) system at Michigan State University. The project consists of three programs that run sequentially:
 
-1. **`RecoverBeamSpot`** fits the experimental beam-spot position and
-   width from the measured central-pad and outer-quadrant-pad
-   intensities.
-2. **`GetParticleDistributions`** uses those beam-spot parameters (plus
-   variations for systematic uncertainty) to sample the input
-   distributions needed by the simulation.
-3. **`SGMC`** runs the per-proton Monte-Carlo scan and produces the
-   final efficiency summary.
+1. **`RecoverBeamSpot`** fits the experimental beam-spot position and width from the measured central-pad and outer-quadrant-pad intensities.
+2. **`GetParticleDistributions`** uses those beam-spot parameters (plus variations for systematic uncertainty) to sample the input distributions needed by the simulation.
+3. **`SGMC`** runs the per-proton Monte-Carlo scan and produces the final efficiency summary.
 
 ## Physics overview
 
@@ -73,9 +62,9 @@ branching ratios can be read off directly from the spread in results.
 ├── SGMC.cpp                      # stage-2: Monte-Carlo efficiency scan
 ├── RecoverBeamSpot.cfg           # stage-0 config
 ├── GetParticleDistributions.cfg  # stage-1 config
-├── simulations.ctg               # stage-2 config
+├── simulations.cfg               # stage-2 config
 ├── data/                         # read-only inputs
-│   ├── tripleCoincidences.root   # reference beam-profile histogram
+│   ├── BetaDecayData31Cl.root    # reference beam-profile histogram
 │   ├── padCounts.txt             # (optional) measured pad intensities
 │   ├── protonStoppingPower808TorrP10gas.txt
 │   ├── stoppingPower96percent.txt
