@@ -188,7 +188,7 @@ For the GADGET detector system:
 
 For the GADGET II upgrade (a TPC-based successor to the present Proton Detector):
 
-> R. Mahajan, T. Wheeler, E. Pollacco, C. Wrede, *et al.*, *Time Projection Chamber for GADGET II*, Phys. Rev. C **110**, 035807 (2024). [doi:10.1103/PhysRevC.110.035807](https://doi.org/10.1103/PhysRevC.110.035807)
+> R. Mahajan, T. Wheeler, E. Pollacco, C. Wrede, *et al.*, *Time projection chamber for GADGET II*, Phys. Rev. C **110**, 035807 (2024). [doi:10.1103/PhysRevC.110.035807](https://doi.org/10.1103/PhysRevC.110.035807)
 
 ## Citation
 
