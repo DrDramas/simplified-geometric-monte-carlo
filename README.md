@@ -1,52 +1,27 @@
 # Simplified Geometric Monte Carlo (SGMC) simulation
 
-This is simulation of beta-delayed charged-particle decays in a gas-filled proportional counter. It was developed to characterize the efficiency of the Proton Detector as part of the Gaseous Detector with Germanium Tagging (GADGET) system at Michigan State University. The project consists of three programs that run sequentially:
+This is a simulation of beta-delayed charged-particle decays in the Proton Detector, part of the Gaseous Detector with Germanium Tagging (GADGET) system developed at Michigan State University. This simplified, geometric Monte Carlo simulation (SGMC) was designed to characterize the proton-detection efficiency of GADGET by recreating the initial beam distribution from data and simulating proton track ionization within the active region of the detector chamber. The project consists of three programs that run sequentially:
 
-1. **`RecoverBeamSpot`** uses the multiplicity of counts across five segmented detector pads to determine a 2D Gaussian beam from which the starting positions of radioactive beam decays are sampled.
-2. **`GetParticleDistributions`** uses the parameters deduced from chi-squared minimization to save these beam-spot distributions to histograms. It also uses drift time data as a proxy for the longitudinal beam distribution in order to simulate the effect of electron diffusion within the gaseous medium, assuming a uniform eletric field. 
-3. **`SGMC`** calculates the energy deposition of protons in the fill gas, determines the magnitude of ionization electrons, and the geometry of the proton tracks in the detector. This information is used to estimate how likely a proton of a given energy is to be measured by the MICROMEGAS electronics readout.
+1. **`recoverBeamSpot.cpp`** is a ROOT macro that uses the multiplicity of counts across the five active detector pads to determine a fit a 2D Gaussian distribution representative of the beam spot projected onto the Proton Detector's segmented electronics readout.
+2. **`GetParticleDistributions`** uses the position and width parameters deduced from chi-squared minimization fit from the first method to save these beam-spot distributions to histograms, which will be read out later in the full simulation. It also uses drift time data from a source ROOT file as a proxy for the longitudinal beam distribution in order to simulate the effect of electron diffusion within the gaseous medium, assuming a uniform eletric field. 
+3. **`SGMC`** calculates the energy deposition of protons in the fill gas using stopping power calculations in SRIM to determine the number of ionization electrons produced in each decay. It assumes beta decays decays are isometric and uses the geometry of the emitted protons to estimate how likely a proton is to be detected.
 
 ## Physics overview
 
-<sup>31</sup>Cl undergoes β<sup>+</sup> decay (T<sub>1/2</sub> = 190 ms) to <sup>31</sup>S, which can then de-excite via protonemitting a proton. Precise measurement of these β-delayed proton
-branches provides an experimental constraint on the <sup>30</sup>P(p,
-γ)<sup>31</sup>S reaction rate, which is important for understanding
-nucleosynthesis in classical novae — particularly the abundance of
-<sup>30</sup>Si observed in pre-solar stardust grains thought to have
-condensed from nova ejecta.
+<sup>31</sup>Cl is rare isotope of chlorine with a radioactive half-life of T<sub>1/2</sub> = 190 ms. It undergoes β<sup>+</sup> decay to <sup>31</sup>S, often populating one of its many excited states. It is possible for <sup>31</sup>S levels with excitation energies above the proton separation energy (S<sub>p</sub> = 6131 keV) to decay via proton emission, producing <sup>30</sup>P as the final daughter nucleus. Precise measurement of these β-delayed proton decays provides informations on the properties of <sup>31</sup>S exicted states, which are useful for comparing to nuclear shell-model theory as well as reducing nuclear uncertainties associated with astrophysical modeling. The original motivation for this experiment was to constraint the <sup>30</sup>P(p,γ)<sup>31</sup>S reaction rate, which is important for understanding nucleosynthesis in classical novae.
 
-The measurement is performed with GADGET, which pairs the Proton
-Detector — a custom-built cylindrical gas-filled ionization chamber
-with a Micromegas segmented-pad readout — with the Segmented Germanium
-Array (SeGA) for prompt γ-ray detection. The <sup>31</sup>Cl beam is
-implanted onto a thin Kapton window at the center of the Proton
-Detector's active volume, where it decays in situ; the emitted protons
-ionize P10 counting gas (90% Ar, 10% CH<sub>4</sub>) as they traverse
-the chamber, and the liberated electrons drift to the Micromegas plane
-where they are amplified and collected. A central circular pad measures
-the signal of interest, four outer quadrant pads and an annular guard
-ring provide veto and positional information, and SeGA tags coincident
-γ-rays to pin down which excited state of <sup>31</sup>S emitted the
-proton. For details of the apparatus see Friedman et al., Nucl.
-Instrum. Methods A **940**, 93 (2019).
+A measurement was performed with GADGET, which pairs the Proton Detector — a custom-built cylindrical gas-filled ionization chamber with a Micromegas segmented-pad readout — with the Segmented Germanium Array (SeGA) for prompt γ-ray detection. The <sup>31</sup>Cl beam was produced by the Coupled Cyclotron Facility at the National Superconducting Cyclotron Laboratory (now the Facility for Rare Isotope Beams). The radioactive ion beam was entered the experimental setup through a thin Kapton window and was implanted in gaseous detector's active volume, composed of a P10 fill gas (90% Ar, 10% CH<sub>4</sub>). The ions diffuse for a short time under Brownian motion before undergoing  β<sup>+</sup> decay. The detector is mostly transparent to fast-moving β particles, but the more massive protons and recoiling <sup>30</sup>P nucleus deposit their full center-of-mass energy into ionizing the fill gas. These ionization electronics drift at a constant velocity under the influence of a uniform electric field until they reach the amplification region, where their signals are amplified by the Micro-Mesh Gaseous Structure (MICROMEGAS). The detector's anode plane is segmented into 13 charge-senstive pads consisting of a central circular pad, which is surrounded by four annular pads. These five inner pads define the active region of the Proton Detector and are surrounded by eight veto pads, which are used to exclude decay events that do not deposit their full energy within the active region.
 
-Detection efficiency depends on:
+SeGA is used to measure the γ-rays emitted from exicited states of <sup>31</sup>S populated by <sup>31</sup>Cl decay and allows for detailed proton-γ coincidence analysis for various radiations collected within the same time window. This is necessary in order to construct an accurate nuclear decay scheme for <sup>31</sup>Cl(βpγ)<sup>30</sup>P. The γ-ray information is also useful for reconstructing a rough approximation of the longitudinal distribution of the implanted ions. Because the relationship between the initial position of the decay event and the time it takes for ionization electronics to reach the MICROMEGAS is linear, measuring the time between coincident γ-rays and proton events allows us estimate the <sup>31</sup>Cl distribution along the length of the Proton Detector. For more details on the design, testing, and commission of the GADGET apparatus, see Friedman et al., Nucl. Instrum. Methods A **940**, 93 (2019).
 
-- **Beam-spot shape** on the Kapton window — a Gaussian profile whose
-  centroid and 1/e<sup>2</sup> radius are fit from the measured pad
-  intensities (see `RecoverBeamSpot`) and which drifts outward during
-  the implantation half-lives.
-- **Electron diffusion** during drift to the Micromegas, which blurs
-  the apparent track and can push ionization charge outside the active
-  region.
-- **Stopping power** of the gas (dE/dx curve), which determines how
-  many ionization electrons are produced along the track.
-- **Veto threshold** on the outer guard ring, which discriminates
-  decays that deposit too much charge outside the active volume.
+Thus, the uncertainties associated with modeling GADGET's proton detection efficiencies are as follows:
 
-This code evaluates the efficiency across a grid of variations in each
-of these inputs so that the systematic uncertainty on the extracted
-branching ratios can be read off directly from the spread in results.
+- **Initial beam spot** - the transverse beam distribution projected onto the MICROMEGAS readout plane. This is modeled as a 2D Gaussian profile, whose position and width are fit from the measured pad intensities (see `recoverBeamSpot.cpp`), and is subject to outward diffusion under Brownian motion over the lifetime of a <sup>31</sup> ion.
+- **Electron diffusion** - the radial diffusion of electrons within the fill gas as the ionized particles drift from the initial position of the decay event towards the MICROMEGAS, which blurs the apparent track and can push ionization charge outside the active region.
+- **Stopping power**  - the energy loss (dE/dx curve) of protons in the fill gas, which determines how many ionization electrons are produced along the track.
+- **Veto threshold** - the total number of eletrons required to trigger the veto condition on one or more the eight outer pads, which exclude decays that deposit too much charge outside the active volume.
+
+This code evaluates the efficiency across a grid of variations in each of these inputs so that the systematic uncertainty on the extracted branching ratios can be read off directly from the spread in results.
 
 ## Repository layout
 
