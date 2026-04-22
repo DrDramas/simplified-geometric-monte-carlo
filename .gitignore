@@ -1,4 +1,5 @@
 # Compiled executables
+RecoverBeamSpot
 GetParticleDistributions
 SGMC
 
@@ -8,6 +9,9 @@ SGMC
 
 # Output directory
 results/
+
+# README figures
+images/
 
 # Editor / OS junk
 *.swp
