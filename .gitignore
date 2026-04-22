@@ -1,0 +1,14 @@
+# Compiled executables
+GetParticleDistributions
+SGMC
+
+# Object files
+*.o
+*.d
+
+# Output directory
+results/
+
+# Editor / OS junk
+*.swp
+.DS_Store
