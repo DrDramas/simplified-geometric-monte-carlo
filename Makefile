@@ -1,13 +1,20 @@
-CXXFLAGS := -O2 -pthread $(shell root-config --cflags)
-LDLIBS   := $(shell root-config --libs)
+# Shared by every target
+CXXFLAGS_COMMON := -O2 $(shell root-config --cflags)
+LDLIBS          := $(shell root-config --libs)
 
-all: GetParticleDistributions SGMC
+# Parallel stages need pthreads
+CXXFLAGS_PAR    := $(CXXFLAGS_COMMON) -pthread
+
+all: RecoverBeamSpot GetParticleDistributions SGMC
+
+RecoverBeamSpot: RecoverBeamSpot.cpp
+	$(CXX) $(CXXFLAGS_COMMON) $< $(LDLIBS) -o $@
 
 GetParticleDistributions: GetParticleDistributions.cpp
-	$(CXX) $(CXXFLAGS) $< $(LDLIBS) -o $@
+	$(CXX) $(CXXFLAGS_PAR) $< $(LDLIBS) -o $@
 
 SGMC: SGMC.cpp
-	$(CXX) $(CXXFLAGS) $< $(LDLIBS) -o $@
+	$(CXX) $(CXXFLAGS_PAR) $< $(LDLIBS) -o $@
 
 clean:
-	rm -f GetParticleDistributions SGMC
+	rm -f RecoverBeamSpot GetParticleDistributions SGMC
