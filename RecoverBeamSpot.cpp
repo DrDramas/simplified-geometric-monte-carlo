@@ -1,4 +1,4 @@
-// RecoverBeamSpot.cpp -------------------------------------------------------
+// recoverBeamSpot.cpp -------------------------------------------------------
 //
 // Fit a 2D Gaussian beam spot to the measured pad intensities of a five-pad
 // detector arrangement: one central disc and four azimuthally-divided outer
@@ -6,10 +6,10 @@
 // nothing is hardcoded for a specific experiment.
 //
 // Run as a ROOT macro:
-//   root -l -b -q 'RecoverBeamSpot.cpp("RecoverBeamSpot.cfg")'
+//   root -l -b -q 'recoverBeamSpot.cpp("recoverBeamSpot.cfg")'
 // or compile and run:
-//   g++ -O2 $(root-config --cflags) RecoverBeamSpot.cpp $(root-config --libs) -o RecoverBeamSpot
-//   ./RecoverBeamSpot RecoverBeamSpot.cfg
+//   g++ -O2 $(root-config --cflags) recoverBeamSpot.cpp $(root-config --libs) -o recoverBeamSpot
+//   ./recoverBeamSpot recoverBeamSpot.cfg
 // ---------------------------------------------------------------------------
 
 #include "TCanvas.h"
@@ -223,7 +223,7 @@ static Config loadConfig(const string& path) {
 }
 
 static void printConfig(const Config& c) {
-    cout << "---- RecoverBeamSpot configuration ----"                         << endl;
+    cout << "---- recoverBeamSpot configuration ----"                         << endl;
     std::printf("  Geometry [mm]: rCentral=%.2f, rOuterPad=%.2f, "
                 "rGuardInner=%.1f, rGuardOuter=%.1f\n",
                 c.rCentral, c.rOuterPad, c.rGuardInner, c.rGuardOuter);
@@ -433,7 +433,7 @@ static DrawingState* drawBeam(const Config& c,
         }
     }
 
-    st->canvas = new TCanvas("c1", "RecoverBeamSpot", 700, 500);
+    st->canvas = new TCanvas("c1", "recoverBeamSpot", 700, 500);
     st->hist->Draw("colz");
     drawPads(*st, c);
 
@@ -460,7 +460,7 @@ static DrawingState* drawBeam(const Config& c,
 // ===========================================================================
 // Main entry point
 // ===========================================================================
-int RecoverBeamSpot(const char* configFile = "RecoverBeamSpot.cfg") {
+int recoverBeamSpot(const char* configFile = "recoverBeamSpot.cfg") {
     Config cfg = loadConfig(configFile);
     g_cfg = &cfg;
     printConfig(cfg);
@@ -499,7 +499,7 @@ int RecoverBeamSpot(const char* configFile = "RecoverBeamSpot.cfg") {
 // so main() is skipped when loaded as a macro.
 #ifndef __CLING__
 int main(int argc, char** argv) {
-    const char* cfg = (argc > 1) ? argv[1] : "RecoverBeamSpot.cfg";
+    const char* cfg = (argc > 1) ? argv[1] : "recoverBeamSpot.cfg";
     return recoverBeamSpot(cfg);
 }
 #endif

@@ -1,4 +1,4 @@
-// SGMC.cpp -------------------------------------------------------------
+// sgmc.cpp -------------------------------------------------------------
 //
 // Monte-Carlo simulation of the proton-detector efficiency.  Reads its
 // runtime configuration (input file names, histogram names, list of proton
@@ -8,8 +8,8 @@
 // Run as a ROOT macro:
 //     root -l -b -q 'SGMC.cpp("SGMC.config")'
 // or compile:
-//     g++ -O2 `root-config --cflags --libs` SGMC.cpp -o SGMC
-//     ./SGMC SGMC.config
+//     g++ -O2 `root-config --cflags --libs` sgmc.cpp -o SGMC
+//     ./SGMC sgmc.config
 // -----------------------------------------------------------------------------
 
 #include "TCanvas.h"
@@ -683,7 +683,7 @@ static EnergyResult runEnergyJob(double protonEnergy,
 // -----------------------------------------------------------------------------
 //  Main simulation
 // -----------------------------------------------------------------------------
-int SGMC(const char* configFile = "SGMC.config") {
+int sgmc(const char* configFile = "sgmc.config") {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     Config cfg;
@@ -814,10 +814,10 @@ int SGMC(const char* configFile = "SGMC.config") {
     return 0;
 }
 
-// Allow standalone compilation: `g++ SGMC.cpp ... -o SGMC`
+// Allow standalone compilation: `g++ sgmc.cpp ... -o sgmc`
 #ifndef __CLING__
 int main(int argc, char** argv) {
-    const char* configFile = (argc > 1) ? argv[1] : "SGMC.config";
-    return SGMC(configFile);
+    const char* configFile = (argc > 1) ? argv[1] : "sgmc.config";
+    return sgmc(configFile);
 }
 #endif
