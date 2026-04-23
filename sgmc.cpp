@@ -6,7 +6,7 @@
 // recompilation is needed to change inputs.
 //
 // Run as a ROOT macro:
-//     root -l -b -q 'SGMC.cpp("SGMC.config")'
+//     root -l -b -q 'sgmc.cpp("sgmc.cfg")'
 // or compile:
 //     g++ -O2 `root-config --cflags --libs` sgmc.cpp -o SGMC
 //     ./SGMC sgmc.config
